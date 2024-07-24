@@ -1,6 +1,6 @@
 # ADM Emulator
 
-This project is based on (tango-adb/old-demo)[https://github.com/tango-adb/old-demo] which gives API Reference for using (tango)[https://github.com/yume-chan/ya-webadb]. It uses a subset of features provided by the library to manage and connect to emulators using WebSockets.
+This project is based on [tango-adb/old-demo](https://github.com/tango-adb/old-demo) which gives API Reference for using [tango](https://github.com/yume-chan/ya-webadb). It uses a subset of features provided by the library to manage and connect to emulators using WebSockets.
 
 ## Setup
 
