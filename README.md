@@ -1,6 +1,27 @@
 # ADM Emulator
 
-This is the now deprecated demo project for `@yume-chan/adb` package. It won't be updated, but it still mostly reflects the current API.
+This project is based on (tango-adb/old-demo)[https://github.com/tango-adb/old-demo] which gives API Reference for using (tango)[https://github.com/yume-chan/ya-webadb]. It uses a subset of features provided by the library to manage and connect to emulators using WebSockets.
+
+## Setup
+
+1. Clone the repo
+
+```sh
+git clone https://github.com/dev-rvk/adm-emulator
+cd adm-emulator
+```
+
+2. Install dependancies
+
+```sh
+pnpm install
+```
+
+3. Run in developement environment
+
+```sh
+pnpm recursive run dev                                           
+```
 
 ## Build
 
@@ -11,14 +32,13 @@ pnpm recursive run build
 
 ## Generate static build that can be hosted on GitHub Pages
 
-The demo is built with [Next.js](https://nextjs.org/), a full-stack React framework, which usually requires a Node.js environment to run.
-
-However, since the demo doesn't have any server-side code, the most simple deployment method is to use the [Static HTML Export](https://nextjs.org/docs/advanced-features/static-html-export) feature of Next.js. It generates pre-rendered, fully static HTML files, that can be deployed to any static website hosting services (e.g. GitHub Pages).
+This project was built using `Next.js`
+However, since it doesn't have any server-side code, the most simple deployment method is to use the [Static HTML Export](https://nextjs.org/docs/advanced-features/static-html-export) feature of Next.js. It generates pre-rendered, fully static HTML files, that can be deployed to any static website hosting services (e.g. GitHub Pages).
 
 To export static deployable HTML files, after running `rush build` command, run:
 
 ```sh
-cd packages/demo
+cd packages/adm-emulator
 npx next export
 ```
 
