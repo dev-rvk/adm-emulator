@@ -1,11 +1,11 @@
 {
-    "name": "Tango",
-    "short_name": "Tango",
+    "name": "ADM Emulator",
+    "short_name": "ADM",
     "categories": [
         "utilities",
         "developer"
     ],
-    "description": "ADB in your browser",
+    "description": "Run Emulators in Browser",
     "scope": "/adm-emulator/",
     "start_url": "/adm-emulator/",
     "background_color": "#ffffff",
