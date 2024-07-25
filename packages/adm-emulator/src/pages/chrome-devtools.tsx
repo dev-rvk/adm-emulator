@@ -60,7 +60,7 @@ class AdbUndiciSocket extends Duplex {
     async _write(
         chunk: any,
         encoding: BufferEncoding,
-        callback: (error?: Error | null | undefined) => void
+        callback: (error?: Error | null | undefined) => void,
     ): Promise<void> {
         const consumable = new Consumable(chunk);
         try {
@@ -73,7 +73,7 @@ class AdbUndiciSocket extends Duplex {
 
     async _destroy(
         error: Error | null,
-        callback: (error: Error | null) => void
+        callback: (error: Error | null) => void,
     ): Promise<void> {
         await this._socket.close();
         callback(error);
@@ -97,7 +97,7 @@ const agent = new Agent({
     async connect(options, callback) {
         try {
             const socket = await GLOBAL_STATE.adb!.createSocket(
-                "localabstract:" + options.hostname
+                "localabstract:" + options.hostname,
             );
             callback(null, new AdbUndiciSocket(socket) as unknown as Socket);
         } catch (e) {
@@ -190,7 +190,7 @@ const STATE = makeAutoObservable(
     },
     {
         browsers: observable.deep,
-    }
+    },
 );
 
 const SOCKET_NAMES = [
@@ -207,7 +207,7 @@ const GET_SOCKET_COMMAND = [
 async function getBrowsers() {
     const device = GLOBAL_STATE.adb!;
     const sockets = await device.subprocess.spawnAndWaitLegacy(
-        GET_SOCKET_COMMAND.join(" | ")
+        GET_SOCKET_COMMAND.join(" | "),
     );
     const browsers: Browser[] = [];
     for (const socket of sockets.split("\n").filter(Boolean)) {
@@ -246,7 +246,7 @@ reaction(
         }, 5000);
 
         getBrowsers();
-    }
+    },
 );
 
 const PACKAGE_NAMES: Record<string, string | undefined> = {
@@ -302,7 +302,7 @@ const ChromeDevToolsPage: NextPage = observer(function ChromeDevTools() {
         const childWindow = window.open(
             `${basePath}/chrome-devtools-frame?script=${script}&${params}`,
             "_blank",
-            "popup"
+            "popup",
         )!;
         childWindow.addEventListener("message", (e) => {
             if (
@@ -371,7 +371,7 @@ const ChromeDevToolsPage: NextPage = observer(function ChromeDevTools() {
     return (
         <Stack {...RouteStackProps}>
             <Head>
-                <title>Chrome Remote Debugging - Tango</title>
+                <title>Chrome Remote Debugging</title>
             </Head>
 
             {STATE.browsers.length === 0 ? (
@@ -417,7 +417,7 @@ const ChromeDevToolsPage: NextPage = observer(function ChromeDevTools() {
                                         onClick={() =>
                                             handleInspectClick(
                                                 browser.socket,
-                                                page
+                                                page,
                                             )
                                         }
                                     >
@@ -428,7 +428,7 @@ const ChromeDevToolsPage: NextPage = observer(function ChromeDevTools() {
                                         onClick={() =>
                                             handleFocusClick(
                                                 browser.socket,
-                                                page
+                                                page,
                                             )
                                         }
                                     >
@@ -439,7 +439,7 @@ const ChromeDevToolsPage: NextPage = observer(function ChromeDevTools() {
                                         onClick={() =>
                                             handleCloseClick(
                                                 browser.socket,
-                                                page
+                                                page,
                                             )
                                         }
                                     >

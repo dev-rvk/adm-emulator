@@ -104,9 +104,9 @@ class InstallPageState {
                                     value: 0.8,
                                 };
                             }
-                        })
-                    )
-                )
+                        }),
+                    ),
+                ),
         );
 
         const elapsed = Date.now() - start;
@@ -115,7 +115,7 @@ class InstallPageState {
                 write: action((chunk) => {
                     this.log += chunk;
                 }),
-            })
+            }),
         );
 
         const transferRate = (
@@ -145,7 +145,7 @@ const Install: NextPage = () => {
     return (
         <Stack {...RouteStackProps}>
             <Head>
-                <title>Install APK - Tango</title>
+                <title>Install APK</title>
             </Head>
 
             <Stack horizontal>

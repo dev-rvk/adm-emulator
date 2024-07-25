@@ -27,7 +27,7 @@ class FrameBufferState {
         this.imageData = new ImageData(
             new Uint8ClampedArray(image.data),
             image.width,
-            image.height
+            image.height,
         );
     }
 
@@ -58,7 +58,7 @@ const FrameBuffer: NextPage = (): JSX.Element | null => {
                     1024 /
                     1024
                 ).toFixed(2),
-                "MB/s"
+                "MB/s",
             );
             state.setImage(framebuffer);
         } catch (e: any) {
@@ -143,7 +143,7 @@ const FrameBuffer: NextPage = (): JSX.Element | null => {
     return (
         <Stack {...RouteStackProps}>
             <Head>
-                <title>Screen Capture - Tango</title>
+                <title>Screen Capture</title>
             </Head>
 
             <CommandBar

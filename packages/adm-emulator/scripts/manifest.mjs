@@ -6,10 +6,10 @@ fs.writeFileSync(
     new URL("../public/manifest.json", import.meta.url),
     JSON.stringify(
         {
-            name: "Tango",
-            short_name: "Tango",
+            name: "ADM Emulator",
+            short_name: "ADM",
             categories: ["utilities", "developer"],
-            description: "ADB in your browser",
+            description: "Run Emulators in Browser",
             scope: baseUrl,
             start_url: baseUrl,
             background_color: "#ffffff",

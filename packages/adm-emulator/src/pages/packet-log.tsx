@@ -71,7 +71,7 @@ const state = new (class {
                     this.selection.select(
                         GLOBAL_STATE.logs.length - 1,
                         false,
-                        true
+                        true,
                     );
                 }),
             },
@@ -169,7 +169,7 @@ const columns: Column[] = [
                         {item.direction}
                     </div>
                 );
-            }
+            },
         ),
     },
     {
@@ -195,7 +195,7 @@ const columns: Column[] = [
                         {item.commandString}
                     </div>
                 );
-            }
+            },
         ),
     },
     {
@@ -219,7 +219,7 @@ const columns: Column[] = [
                         {item.arg0String}
                     </div>
                 );
-            }
+            },
         ),
     },
     {
@@ -243,7 +243,7 @@ const columns: Column[] = [
                         {item.arg1String}
                     </div>
                 );
-            }
+            },
         ),
     },
     {
@@ -268,22 +268,24 @@ const columns: Column[] = [
                         {item.payloadString}
                     </div>
                 );
-            }
+            },
         ),
     },
 ];
 
-const Header = withDisplayName("Header")(
-    ({ className, columnIndex, ...rest }: GridHeaderProps) => {
-        const classes = useClasses();
+const Header = withDisplayName("Header")(({
+    className,
+    columnIndex,
+    ...rest
+}: GridHeaderProps) => {
+    const classes = useClasses();
 
-        return (
-            <div className={mergeClasses(className, classes.header)} {...rest}>
-                {columns[columnIndex].title}
-            </div>
-        );
-    }
-);
+    return (
+        <div className={mergeClasses(className, classes.header)} {...rest}>
+            {columns[columnIndex].title}
+        </div>
+    );
+});
 
 const Row = observer(function Row({
     className,
@@ -300,7 +302,7 @@ const Row = observer(function Row({
                 }
                 state.selection.select(rowIndex, isModKey(e), e.shiftKey);
             });
-        }
+        },
     );
 
     return (
@@ -308,7 +310,7 @@ const Row = observer(function Row({
             className={mergeClasses(
                 className,
                 classes.row,
-                state.selection.has(rowIndex) && classes.selected
+                state.selection.has(rowIndex) && classes.selected,
             )}
             onPointerDown={handlePointerDown}
             {...rest}
@@ -322,7 +324,7 @@ const PacketLog: NextPage = () => {
     return (
         <Stack {...RouteStackProps} tokens={{}}>
             <Head>
-                <title>Packet Log - Tango</title>
+                <title>Packet Log</title>
             </Head>
 
             <CommandBar items={state.commandBarItems} />

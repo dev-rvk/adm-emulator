@@ -871,7 +871,7 @@ const FileManager: NextPage = (): JSX.Element | null => {
     return (
         <Stack {...RouteStackProps}>
             <Head>
-                <title>File Manager - Tango</title>
+                <title>File Manager</title>
             </Head>
 
             <CommandBar items={state.menuItems} />

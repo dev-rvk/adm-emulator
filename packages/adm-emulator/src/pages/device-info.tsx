@@ -42,7 +42,7 @@ const DeviceInfo: NextPage = () => {
     return (
         <Stack {...RouteStackProps}>
             <Head>
-                <title>Device Info - Tango</title>
+                <title>Device Info</title>
             </Head>
 
             <MessageBar delayedRender={false}>

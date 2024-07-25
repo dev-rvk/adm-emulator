@@ -158,7 +158,7 @@ const state = makeAutoObservable(
                             }
                         },
                     }),
-                    { signal: this.stopSignal.signal }
+                    { signal: this.stopSignal.signal },
                 )
                 .catch((e) => {
                     if (this.stopSignal?.signal.aborted) {
@@ -217,7 +217,7 @@ const state = makeAutoObservable(
                         this.selection.select(
                             this.list.length - 1,
                             false,
-                            true
+                            true,
                         );
                     }),
                 },
@@ -247,8 +247,8 @@ const state = makeAutoObservable(
                         for (const index of this.selection) {
                             writer.write(
                                 encodeUtf8(
-                                    this.formatEntry(this.list[index]) + "\n"
-                                )
+                                    this.formatEntry(this.list[index]) + "\n",
+                                ),
                             );
                         }
                         writer.close();
@@ -554,7 +554,7 @@ const state = makeAutoObservable(
                         const item = this.list[rowIndex];
                         if (!item.timeString) {
                             item.timeString = new Date(
-                                item.seconds * 1000
+                                item.seconds * 1000,
                             ).toISOString();
                         }
 
@@ -564,7 +564,7 @@ const state = makeAutoObservable(
                             <div
                                 className={mergeClasses(
                                     classes.code,
-                                    className
+                                    className,
                                 )}
                                 {...rest}
                             >
@@ -590,7 +590,7 @@ const state = makeAutoObservable(
                             <div
                                 className={mergeClasses(
                                     classes.code,
-                                    className
+                                    className,
                                 )}
                                 {...rest}
                             >
@@ -616,7 +616,7 @@ const state = makeAutoObservable(
                             <div
                                 className={mergeClasses(
                                     classes.code,
-                                    className
+                                    className,
                                 )}
                                 {...rest}
                             >
@@ -642,7 +642,7 @@ const state = makeAutoObservable(
                             <div
                                 className={mergeClasses(
                                     classes.code,
-                                    className
+                                    className,
                                 )}
                                 {...rest}
                             >
@@ -668,7 +668,7 @@ const state = makeAutoObservable(
                             <div
                                 className={mergeClasses(
                                     classes.code,
-                                    className
+                                    className,
                                 )}
                                 {...rest}
                             >
@@ -694,7 +694,7 @@ const state = makeAutoObservable(
                             <div
                                 className={mergeClasses(
                                     classes.code,
-                                    className
+                                    className,
                                 )}
                                 {...rest}
                             >
@@ -710,7 +710,7 @@ const state = makeAutoObservable(
         buffer: false,
         list: observable.shallow,
         flush: action.bound,
-    }
+    },
 );
 
 autorun(() => {
@@ -770,7 +770,7 @@ const Row = observer(function Row({
                 e.preventDefault();
             }
             state.selection.select(rowIndex, isModKey(e), e.shiftKey);
-        })
+        }),
     );
 
     return (
@@ -779,7 +779,7 @@ const Row = observer(function Row({
                 className,
                 classes.row,
                 state.selection.has(rowIndex) && classes.selected,
-                classes[PRIORITY_COLORS[state.list[rowIndex]!.priority]]
+                classes[PRIORITY_COLORS[state.list[rowIndex]!.priority]],
             )}
             onPointerDown={handlePointerDown}
             {...rest}
@@ -810,7 +810,7 @@ const LogcatPage: NextPage = () => {
     return (
         <Stack {...RouteStackProps}>
             <Head>
-                <title>Logcat - Tango</title>
+                <title>Logcat</title>
             </Head>
 
             <CommandBar items={state.commandBar} />
