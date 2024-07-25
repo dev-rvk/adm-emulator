@@ -873,10 +873,12 @@ const FileManager: NextPage = (): JSX.Element | null => {
             <Head>
                 <title>File Manager</title>
             </Head>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <CommandBar items={state.menuItems} />
+                <div style={{ marginLeft: '25%', fontSize: '1.2em', fontWeight: '600' }}>File Manager</div>
+            </div>
 
-            <CommandBar items={state.menuItems} />
-
-            <Breadcrumb items={state.breadcrumbItems} />
+            {/* <Breadcrumb items={state.breadcrumbItems} /> */}
 
             <StackItem
                 grow
