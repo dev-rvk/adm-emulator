@@ -15,6 +15,7 @@ import {
     CheckmarkRegular,
     ChevronDownRegular,
     ChevronRightRegular,
+    ChevronLeftRegular,
     ChevronUpRegular,
     CircleRegular,
     CloudArrowDownRegular,
@@ -54,6 +55,7 @@ import {
     WarningRegular,
     WifiSettingsRegular,
     WindowConsoleRegular,
+    ChevronLeft12Regular,
 } from "@fluentui/react-icons";
 
 const STYLE = {};
@@ -70,6 +72,7 @@ export function register() {
             Bug: <BugRegular style={STYLE} />,
             Camera: <CameraRegular style={STYLE} />,
             ChevronDown: <ChevronDownRegular style={STYLE} />,
+            ChevronLeft: <ChevronLeftRegular style={STYLE} />,
             ChevronRight: <ChevronRightRegular style={STYLE} />,
             ChevronUp: <ChevronUpRegular style={STYLE} />,
             Circle: <CircleRegular style={STYLE} />,
@@ -145,6 +148,7 @@ const Icons = {
     Circle: "Circle",
     ChevronDown: "ChevronDown",
     ChevronRight: "ChevronRight",
+    ChevronLeft:"ChevronLeft",
     ChevronUp: "ChevronUp",
     CloudArrowUp: "CloudArrowUp",
     CloudArrowDown: "CloudArrowDown",

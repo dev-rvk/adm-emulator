@@ -158,6 +158,23 @@ class FileManagerState {
     get menuItems() {
         let result: IContextualMenuItem[] = [];
 
+        result.push({
+            key: "goBack",
+            text: "",
+            iconProps: {
+                iconName: Icons.ChevronLeft,
+                style: { height: 20, fontSize: 20, lineHeight: 1.5 },
+            },
+            onClick: () => {
+                const parentPath = path.dirname(this.path);
+                if (parentPath !== this.path) {
+                    this.path = parentPath;
+                    this.loadFiles();
+                }
+                return false;
+            },
+        });
+
         switch (this.selectedItems.length) {
             case 0:
                 result.push({
