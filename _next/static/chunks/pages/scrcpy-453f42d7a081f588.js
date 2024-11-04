@@ -1,2 +1,0 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[533],{6551:function(n,_,u){(window.__NEXT_P=window.__NEXT_P||[]).push(["/scrcpy",function(){return u(4914)}])}},function(n){n.O(0,[258,133,252,914,774,888,179],function(){return n(n.s=6551)}),_N_E=n.O()}]);
-//# sourceMappingURL=scrcpy-453f42d7a081f588.js.map
