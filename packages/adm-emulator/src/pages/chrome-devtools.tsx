@@ -307,7 +307,7 @@ const ChromeDevToolsPage: NextPage = observer(function ChromeDevTools() {
         childWindow.addEventListener("message", (e) => {
             if (
                 typeof e.data !== "object" ||
-                !"type in e.data" ||
+                !("type" in e.data) ||
                 e.data.type !== "AdbWebSocket"
             ) {
                 return;
@@ -356,8 +356,8 @@ const ChromeDevToolsPage: NextPage = observer(function ChromeDevTools() {
                 port.postMessage({ type: "close" });
                 port.close();
             });
-        });
-    }, []);
+
+        });    }, []);
 
     const handleFocusClick = useCallback((socket: string, page: Page) => {
         focusPage(socket, page);

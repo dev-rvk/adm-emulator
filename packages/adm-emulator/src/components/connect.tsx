@@ -57,6 +57,7 @@ function ConnectCore(): JSX.Element | null {
                 });
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wsUrl]);
 
     // Auto-connect when device is selected and wsUrl is present
@@ -64,6 +65,7 @@ function ConnectCore(): JSX.Element | null {
         if (wsUrl && selected?.serial === wsUrl && !GLOBAL_STATE.adb && !connecting) {
             connect();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected, wsUrl, connecting]);
 
     // Hide UI when auto-connecting
