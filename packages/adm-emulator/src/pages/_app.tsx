@@ -17,6 +17,7 @@ import { Connect, ErrorDialogProvider } from "../components";
 import "../styles/globals.css";
 import { Icons } from "../utils";
 import { register as registerIcons } from "../utils/icons";
+import AdbDaemonWebSocketDevice from "@yume-chan/adb-daemon-ws";
 
 registerIcons();
 
@@ -135,6 +136,23 @@ const {
 
 function App({ Component, pageProps }: AppProps) {
     const classes = useClasses();
+    
+    // redirect url
+    const router = useRouter();
+    const { wsUrl } = router.query;
+
+    useEffect(() => {
+        if (wsUrl && typeof wsUrl === 'string'){
+            // store in local storage
+            const wsDevice = new AdbDaemonWebSocketDevice(wsUrl);
+            const savedList = localStorage.getItem("ws-backend-lst") || '[]';
+            const parsed = JSON.parse(savedList);
+            parsed.push({address: wsUrl });
+            localStorage.setItem("ws-backend-list", JSON.stringify(parsed));
+            // router.reload()
+        }
+    }, [wsUrl]);
+
 
     const [leftPanelVisible, setLeftPanelVisible] = useState(false);
     const toggleLeftPanel = useCallback(() => {
@@ -143,8 +161,6 @@ function App({ Component, pageProps }: AppProps) {
     useEffect(() => {
         setLeftPanelVisible(innerWidth > 650);
     }, []);
-
-    const router = useRouter();
 
     if ("noLayout" in Component) {
         return <Component {...pageProps} />;
@@ -217,5 +233,4 @@ function App({ Component, pageProps }: AppProps) {
         </ErrorDialogProvider>
     );
 }
-
 export default App;

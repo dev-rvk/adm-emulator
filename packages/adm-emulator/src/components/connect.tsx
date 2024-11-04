@@ -29,6 +29,7 @@ import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { GLOBAL_STATE } from "../state";
 import { CommonStackTokens, Icons } from "../utils";
+import { useRouter } from "next/router";
 
 const DropdownStyles = { dropdown: { width: "100%" } };
 
@@ -37,6 +38,36 @@ const CredentialStore = new AdbWebCredentialStore();
 function ConnectCore(): JSX.Element | null {
     const [selected, setSelected] = useState<AdbDaemonDevice | undefined>();
     const [connecting, setConnecting] = useState(false);
+
+    const router = useRouter();
+    const { wsUrl } = router.query;
+
+    // Handle initial websocket URL setup
+    useEffect(() => {
+        if (wsUrl && typeof wsUrl === 'string') {
+            const existingDevices = webSocketDeviceList.find(device => device.serial === wsUrl);
+            if (!existingDevices) {
+                setWebSocketDeviceList(list => {
+                    const newList = [...list, new AdbDaemonWebSocketDevice(wsUrl)];
+                    localStorage.setItem(
+                        "ws-backend-list",
+                        JSON.stringify(newList.map(x => ({ address: x.serial })))
+                    );
+                    return newList;
+                });
+            }
+        }
+    }, [wsUrl]);
+
+    // Auto-connect when device is selected and wsUrl is present
+    useEffect(() => {
+        if (wsUrl && selected?.serial === wsUrl && !GLOBAL_STATE.adb && !connecting) {
+            connect();
+        }
+    }, [selected, wsUrl, connecting]);
+
+    // Hide UI when auto-connecting
+    const showConnectUI = !wsUrl || !!GLOBAL_STATE.adb;
 
     const [webSocketDeviceList, setWebSocketDeviceList] = useState<
         AdbDaemonWebSocketDevice[]
@@ -242,44 +273,48 @@ function ConnectCore(): JSX.Element | null {
 
     return (
         <Stack tokens={{ childrenGap: 8, padding: "0 0 8px 8px" }}>
-            <Dropdown
-                disabled={!!GLOBAL_STATE.adb || deviceOptions.length === 0}
-                label="Available devices"
-                placeholder="No available devices"
-                options={deviceOptions}
-                styles={DropdownStyles}
-                dropdownWidth={300}
-                selectedKey={selected?.serial}
-                onChange={handleSelectedChange}
-            />
+            {showConnectUI && (
+                <>
+                    <Dropdown
+                        disabled={!!GLOBAL_STATE.adb || deviceOptions.length === 0}
+                        label="Available devices"
+                        placeholder="No available devices"
+                        options={deviceOptions}
+                        styles={DropdownStyles}
+                        dropdownWidth={300}
+                        selectedKey={selected?.serial}
+                        onChange={handleSelectedChange}
+                    />
 
-            {!GLOBAL_STATE.adb ? (
-                <Stack horizontal tokens={CommonStackTokens}>
-                    <StackItem grow shrink>
-                        <PrimaryButton
-                            iconProps={{ iconName: Icons.PlugConnected }}
-                            text="Connect"
-                            disabled={!selected}
-                            primary={!!selected}
-                            styles={{ root: { width: "100%" } }}
-                            onClick={connect}
-                        />
-                    </StackItem>
-                    <StackItem grow shrink>
+                    {!GLOBAL_STATE.adb ? (
+                        <Stack horizontal tokens={CommonStackTokens}>
+                            <StackItem grow shrink>
+                                <PrimaryButton
+                                    iconProps={{ iconName: Icons.PlugConnected }}
+                                    text="Connect"
+                                    disabled={!selected}
+                                    primary={!!selected}
+                                    styles={{ root: { width: "100%" } }}
+                                    onClick={connect}
+                                />
+                            </StackItem>
+                            <StackItem grow shrink>
+                                <DefaultButton
+                                    iconProps={{ iconName: Icons.AddCircle }}
+                                    text="WebSocket"
+                                    styles={{ root: { width: "92%" } }}
+                                    onClick={addWebSocketDevice}
+                                />
+                            </StackItem>
+                        </Stack>
+                    ) : (
                         <DefaultButton
-                            iconProps={{ iconName: Icons.AddCircle }}
-                            text="WebSocket"
-                            styles={{ root: { width: "92%" } }}
-                            onClick={addWebSocketDevice}
+                            iconProps={{ iconName: Icons.PlugDisconnected }}
+                            text="Disconnect"
+                            onClick={disconnect}
                         />
-                    </StackItem>
-                </Stack>
-            ) : (
-                <DefaultButton
-                    iconProps={{ iconName: Icons.PlugDisconnected }}
-                    text="Disconnect"
-                    onClick={disconnect}
-                />
+                    )}
+                </>
             )}
 
             <Dialog
