@@ -7,6 +7,7 @@ import {
     ProgressIndicator,
     Stack,
     StackItem,
+    TextField,
 } from "@fluentui/react";
 import {
     Adb,
@@ -30,6 +31,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { GLOBAL_STATE } from "../state";
 import { CommonStackTokens, Icons } from "../utils";
 import { useRouter } from "next/router";
+// import {AdbPacketSerializeStream, AdbPacketDispatcher} from "@yume-chan/adb";
+import { AdbDaemonWebUsbDeviceManager } from "@yume-chan/adb-daemon-webusb";
+
+import { AdbUsbTransport } from "../utils/adb-usb-transport";
+// import { AdbUsbTransport } from "../utils/AdbUsbTransport";
 
 const DropdownStyles = { dropdown: { width: "100%" } };
 
@@ -38,38 +44,62 @@ const CredentialStore = new AdbWebCredentialStore();
 function ConnectCore(): JSX.Element | null {
     const [selected, setSelected] = useState<AdbDaemonDevice | undefined>();
     const [connecting, setConnecting] = useState(false);
+    const [usbSupported, setUsbSupported] = useState(true);
+    const [usbDeviceList, setUsbDeviceList] = useState<AdbDaemonDevice[]>([]);
+
+    const handleSelectedChange = (
+        e: React.FormEvent<HTMLDivElement>,
+        option?: IDropdownOption,
+    ) => {
+        setSelected(option?.data as AdbDaemonDevice);
+    };
+
+    const updateUsbDeviceList = useCallback(async () => {
+        try {
+            const devices: AdbDaemonDevice[] =
+                await AdbDaemonWebUsbDeviceManager.BROWSER!.getDevices();
+            setUsbDeviceList(devices);
+            return devices;
+        } catch (error: any) {
+            setUsbSupported(false);
+            GLOBAL_STATE.showErrorDialog(` Browser not Supported ${error}`);
+        }
+    }, []);
 
     const router = useRouter();
     const { wsUrl } = router.query;
 
     // Handle initial websocket URL setup
     useEffect(() => {
-        if (wsUrl && typeof wsUrl === 'string') {
-            const existingDevices = webSocketDeviceList.find(device => device.serial === wsUrl);
+        if (wsUrl && typeof wsUrl === "string") {
+            const existingDevices = webSocketDeviceList.find(
+                (device) => device.serial === wsUrl,
+            );
             if (!existingDevices) {
-                setWebSocketDeviceList(list => {
-                    const newList = [...list, new AdbDaemonWebSocketDevice(wsUrl)];
-                    localStorage.setItem(
-                        "ws-backend-list",
-                        JSON.stringify(newList.map(x => ({ address: x.serial })))
-                    );
-                    return newList;
+                setWebSocketDeviceList((list) => {
+                    return [...list, new AdbDaemonWebSocketDevice(wsUrl)];
                 });
             }
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wsUrl]);
 
+    // Hide UI when auto-connecting
+    let showConnectUI = !wsUrl || !!GLOBAL_STATE.adb;
     // Auto-connect when device is selected and wsUrl is present
     useEffect(() => {
-        if (wsUrl && selected?.serial === wsUrl && !GLOBAL_STATE.adb && !connecting) {
-            connect();
+        if (
+            wsUrl &&
+            selected?.serial === wsUrl &&
+            !GLOBAL_STATE.adb &&
+            !connecting
+        ) {
+            connect().then((r) => {
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+                showConnectUI = false;
+            });
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected, wsUrl, connecting]);
-
-    // Hide UI when auto-connecting
-    const showConnectUI = !wsUrl || !!GLOBAL_STATE.adb;
 
     const [webSocketDeviceList, setWebSocketDeviceList] = useState<
         AdbDaemonWebSocketDevice[]
@@ -101,6 +131,34 @@ function ConnectCore(): JSX.Element | null {
             return copy;
         });
     }, []);
+
+    const [wsUrlUSB, setWsUrlUSB] = useState<string>("");
+
+    const connectUsbDevice = useCallback(async () => {
+        console.log("connecting....");
+        try {
+            // @ts-ignore
+            const device = new Adb(new AdbUsbTransport({ wsUrl: wsUrlUSB }));
+
+            console.log(device);
+            GLOBAL_STATE.setDevice(undefined, device);
+
+            device.disconnected.then(() => {
+                console.log("Device disconnected");
+                GLOBAL_STATE.setDevice(undefined, undefined);
+            });
+
+            console.log(GLOBAL_STATE.adb);
+
+            const serial = GLOBAL_STATE.adb?.serial;
+            console.log("Device serial:", serial);
+
+            // await GLOBAL_STATE.adb?.power.powerOff()
+            // console.log('Device powered off');
+        } catch (e: any) {
+            GLOBAL_STATE.showErrorDialog(e);
+        }
+    }, [wsUrlUSB]);
 
     const [tcpDeviceList, setTcpDeviceList] = useState<
         AdbDaemonDirectSocketsDevice[]
@@ -155,13 +213,6 @@ function ConnectCore(): JSX.Element | null {
         });
     }, []);
 
-    const handleSelectedChange = (
-        e: React.FormEvent<HTMLDivElement>,
-        option?: IDropdownOption,
-    ) => {
-        setSelected(option?.data as AdbDaemonDevice);
-    };
-
     const connect = useCallback(async () => {
         if (!selected) {
             return;
@@ -197,7 +248,7 @@ function ConnectCore(): JSX.Element | null {
             // Adb won't close the streams,
             // so manually close them.
             try {
-                readable.cancel();
+                await readable.cancel();
             } catch {}
             try {
                 await writable.close();
@@ -245,9 +296,10 @@ function ConnectCore(): JSX.Element | null {
         () =>
             ([] as AdbDaemonDevice[]).concat(
                 webSocketDeviceList,
+                usbDeviceList,
                 tcpDeviceList,
             ),
-        [webSocketDeviceList, tcpDeviceList],
+        [webSocketDeviceList, usbDeviceList, tcpDeviceList],
     );
 
     const deviceOptions = useMemo(() => {
@@ -273,12 +325,55 @@ function ConnectCore(): JSX.Element | null {
         });
     }, [deviceList]);
 
+    const addUsbDevice = useCallback(async () => {
+        try {
+            const [device] = await Promise.all([
+                AdbDaemonWebUsbDeviceManager.BROWSER!.requestDevice(),
+            ]);
+            setSelected(device);
+            await updateUsbDeviceList();
+        } catch (e: any) {
+            setUsbSupported(false);
+            GLOBAL_STATE.showErrorDialog("Browser does not support WebADB");
+        }
+    }, [updateUsbDeviceList]);
+
+    const addMenuProps = useMemo(() => {
+        const items = [];
+
+        if (usbSupported) {
+            items.push({
+                key: "usb",
+                text: "USB",
+                onClick: addUsbDevice,
+            });
+        }
+
+        items.push({
+            key: "websocket",
+            text: "WebSocket",
+            onClick: addWebSocketDevice,
+        });
+
+        if (AdbDaemonDirectSocketsDevice.isSupported()) {
+            items.push({
+                key: "direct-sockets",
+                text: "Direct Sockets TCP",
+                onClick: addTcpDevice,
+            });
+        }
+
+        return {
+            items,
+        };
+    }, [usbSupported, addUsbDevice, addWebSocketDevice, addTcpDevice]);
+
     return (
-        <Stack tokens={{ childrenGap: 8, padding: "0 0 8px 8px" }}>
+        <>
             {showConnectUI && (
-                <>
+                <Stack tokens={{ childrenGap: 8, padding: "0 0 8px 8px" }}>
                     <Dropdown
-                        disabled={!!GLOBAL_STATE.adb || deviceOptions.length === 0}
+                        disabled={!!GLOBAL_STATE.adb}
                         label="Available devices"
                         placeholder="No available devices"
                         options={deviceOptions}
@@ -289,26 +384,59 @@ function ConnectCore(): JSX.Element | null {
                     />
 
                     {!GLOBAL_STATE.adb ? (
-                        <Stack horizontal tokens={CommonStackTokens}>
-                            <StackItem grow shrink>
-                                <PrimaryButton
-                                    iconProps={{ iconName: Icons.PlugConnected }}
-                                    text="Connect"
-                                    disabled={!selected}
-                                    primary={!!selected}
-                                    styles={{ root: { width: "100%" } }}
-                                    onClick={connect}
-                                />
-                            </StackItem>
-                            <StackItem grow shrink>
-                                <DefaultButton
-                                    iconProps={{ iconName: Icons.AddCircle }}
-                                    text="WebSocket"
-                                    styles={{ root: { width: "92%" } }}
-                                    onClick={addWebSocketDevice}
-                                />
-                            </StackItem>
-                        </Stack>
+                        <>
+                            <Stack horizontal tokens={CommonStackTokens}>
+                                <StackItem grow shrink>
+                                    <PrimaryButton
+                                        iconProps={{
+                                            iconName: Icons.PlugConnected,
+                                        }}
+                                        text="Connect"
+                                        disabled={!selected}
+                                        primary={!!selected}
+                                        styles={{ root: { width: "100%" } }}
+                                        onClick={connect}
+                                    />
+                                </StackItem>
+                                <StackItem grow shrink>
+                                    <DefaultButton
+                                        iconProps={{
+                                            iconName: Icons.AddCircle,
+                                        }}
+                                        text="Add"
+                                        split
+                                        splitButtonAriaLabel="Add other connection type"
+                                        menuProps={addMenuProps}
+                                        disabled={!usbSupported}
+                                        primary={!selected}
+                                        styles={{ root: { width: "100%" } }}
+                                        onClick={addUsbDevice}
+                                    />
+                                </StackItem>
+                            </Stack>
+
+                            <Stack horizontal tokens={CommonStackTokens}>
+                                <StackItem grow shrink>
+                                    <TextField
+                                        placeholder="WebSocket URL"
+                                        value={wsUrlUSB}
+                                        onChange={(e, newValue) =>
+                                            setWsUrlUSB(newValue || "")
+                                        }
+                                    />
+                                </StackItem>
+                                <StackItem align="end">
+                                    <PrimaryButton
+                                        iconProps={{
+                                            iconName: Icons.PlugConnected,
+                                        }}
+                                        text="Connect"
+                                        disabled={!wsUrlUSB}
+                                        onClick={connectUsbDevice}
+                                    />
+                                </StackItem>
+                            </Stack>
+                        </>
                     ) : (
                         <DefaultButton
                             iconProps={{ iconName: Icons.PlugDisconnected }}
@@ -316,7 +444,7 @@ function ConnectCore(): JSX.Element | null {
                             onClick={disconnect}
                         />
                     )}
-                </>
+                </Stack>
             )}
 
             <Dialog
@@ -328,8 +456,7 @@ function ConnectCore(): JSX.Element | null {
             >
                 <ProgressIndicator />
             </Dialog>
-        </Stack>
+        </>
     );
 }
-
 export const Connect = observer(ConnectCore);
