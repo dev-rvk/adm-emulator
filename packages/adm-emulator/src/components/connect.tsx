@@ -35,6 +35,11 @@ import { useRouter } from "next/router";
 import { AdbDaemonWebUsbDeviceManager } from "@yume-chan/adb-daemon-webusb";
 
 import { AdbUsbTransport } from "../utils/adb-usb-transport";
+import { error } from "node:console";
+/**
+ * Imports the `AdbUsbTransport` utility from the `../utils/adb-usb-transport` module.
+ * This utility is likely used for handling USB-based communication with ADB devices.
+ */
 // import { AdbUsbTransport } from "../utils/AdbUsbTransport";
 
 const DropdownStyles = { dropdown: { width: "100%" } };
@@ -66,22 +71,77 @@ function ConnectCore(): JSX.Element | null {
         }
     }, []);
 
+    const [wsUrlUSB, setWsUrlUSB] = useState<string>("");
+
+    const [isConnecting, setIsConnecting] = useState(false);
+    const connectUsbDevice = useCallback(async () => {
+        if (isConnecting) return;
+        setIsConnecting(true);
+        console.log("connecting....");
+        try {
+            const device = new Adb(new AdbUsbTransport({ wsUrl: wsUrlUSB }));
+            console.log("URL content:", wsUrlUSB);
+            console.log("URL length:", wsUrlUSB?.length);
+            console.log(device);
+            GLOBAL_STATE.setDevice(undefined, device);
+
+            device.disconnected.then(() => {
+                console.log("Device disconnected");
+                GLOBAL_STATE.setDevice(undefined, undefined);
+            });
+
+            console.log(GLOBAL_STATE.adb);
+
+            const serial = GLOBAL_STATE.adb?.serial;
+            console.log("Device serial:", serial);
+
+            // await GLOBAL_STATE.adb?.power.powerOff()
+            // console.log('Device powered off');
+        } catch (e: any) {
+            if (e instanceof TypeError && e.message.includes("Invalid URL")) {
+                console.warn("Invalid WebSocket URL provided:", wsUrlUSB);
+                // Don't show error dialog for invalid URL
+                return;
+            }
+            console.log(e);
+            GLOBAL_STATE.showErrorDialog(e);
+        } finally {
+            setIsConnecting(false);
+        }
+    }, [wsUrlUSB, isConnecting, setIsConnecting]);
+
     const router = useRouter();
-    const { wsUrl } = router.query;
+    const { type, wsUrl } = router.query;
 
     // Handle initial websocket URL setup
     useEffect(() => {
-        if (wsUrl && typeof wsUrl === "string") {
-            const existingDevices = webSocketDeviceList.find(
-                (device) => device.serial === wsUrl,
-            );
-            if (!existingDevices) {
-                setWebSocketDeviceList((list) => {
-                    return [...list, new AdbDaemonWebSocketDevice(wsUrl)];
-                });
-            }
+        if (!type || !wsUrl || typeof wsUrl !== "string") {
+            return;
         }
-    }, [wsUrl]);
+
+        const connectionType = type.toString().toUpperCase();
+
+        if (
+            (connectionType === "EMULATOR" || connectionType === "WIFI") &&
+            !GLOBAL_STATE.adb
+        ) {
+            // Handle emulator/wifi connection
+            const device = new AdbDaemonWebSocketDevice(wsUrl);
+            setWebSocketDeviceList((list) => {
+                const existingDevice = list.find((d) => d.serial === wsUrl);
+                if (!existingDevice) {
+                    return [...list, device];
+                }
+                return list;
+            });
+            setSelected(device);
+        } else if (connectionType === "USB" && !GLOBAL_STATE.adb) {
+            // Handle USB connection
+            console.log("Setting wsUrlUSB:", decodeURIComponent(wsUrl)); // Add this line to log the decoded wsUrl
+            setWsUrlUSB(String(decodeURIComponent(wsUrl)));
+            connectUsbDevice();
+        }
+    }, [type, wsUrl, connectUsbDevice]);
 
     // Hide UI when auto-connecting
     let showConnectUI = !wsUrl || !!GLOBAL_STATE.adb;
@@ -131,34 +191,6 @@ function ConnectCore(): JSX.Element | null {
             return copy;
         });
     }, []);
-
-    const [wsUrlUSB, setWsUrlUSB] = useState<string>("");
-
-    const connectUsbDevice = useCallback(async () => {
-        console.log("connecting....");
-        try {
-            // @ts-ignore
-            const device = new Adb(new AdbUsbTransport({ wsUrl: wsUrlUSB }));
-
-            console.log(device);
-            GLOBAL_STATE.setDevice(undefined, device);
-
-            device.disconnected.then(() => {
-                console.log("Device disconnected");
-                GLOBAL_STATE.setDevice(undefined, undefined);
-            });
-
-            console.log(GLOBAL_STATE.adb);
-
-            const serial = GLOBAL_STATE.adb?.serial;
-            console.log("Device serial:", serial);
-
-            // await GLOBAL_STATE.adb?.power.powerOff()
-            // console.log('Device powered off');
-        } catch (e: any) {
-            GLOBAL_STATE.showErrorDialog(e);
-        }
-    }, [wsUrlUSB]);
 
     const [tcpDeviceList, setTcpDeviceList] = useState<
         AdbDaemonDirectSocketsDevice[]
@@ -287,6 +319,7 @@ function ConnectCore(): JSX.Element | null {
     const disconnect = useCallback(async () => {
         try {
             await GLOBAL_STATE.adb!.close();
+            console.log("WebSocket connection closed from frontend");
         } catch (e: any) {
             GLOBAL_STATE.showErrorDialog(e);
         }

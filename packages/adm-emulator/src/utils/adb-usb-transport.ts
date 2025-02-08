@@ -16,6 +16,23 @@ import { PromiseResolver } from "@yume-chan/async";
 import type { ValueOrPromise } from "@yume-chan/struct";
 import { DuplexStreamFactory } from "@yume-chan/stream-extra";
 import { ConsumableWritableStream } from "@yume-chan/stream-extra";
+// import { randomUUID } from "crypto";
+
+// Utility function for client-side ID management
+const getClientId = () => {
+    if (typeof window !== "undefined") {
+        const stored = window.sessionStorage.getItem("clientId");
+        if (stored) return stored;
+        const newId = window.crypto.randomUUID();
+        window.sessionStorage.setItem("clientId", newId);
+        return newId;
+    }
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+        const r = (Math.random() * 16) | 0;
+        const v = c === "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+    }); // Fallback for SSR
+};
 
 export class AdbUsbSocket implements AdbSocket {
     service: string;
@@ -28,7 +45,10 @@ export class AdbUsbSocket implements AdbSocket {
     // uses ws
     constructor(service: string, wsUrl: string) {
         this.service = service;
-        this.ws = new WebSocket(wsUrl);
+        const clientId = getClientId();
+        const wsUrlWithClientId = `${wsUrl}${wsUrl.includes("?") ? "&" : "?"}clientId=${encodeURIComponent(clientId)}`;
+        console.log(wsUrlWithClientId);
+        this.ws = new WebSocket(wsUrlWithClientId);
         this.ws.binaryType = "arraybuffer";
 
         console.log(`Attempting to connect to WebSocket at ${wsUrl}`);
@@ -97,6 +117,7 @@ export class AdbUsbSocket implements AdbSocket {
 
     close(): ValueOrPromise<void> {
         this.#closed.resolve();
+        this.ws.close();
     }
 }
 
@@ -136,9 +157,8 @@ export class AdbUsbTransport implements AdbTransport {
     connect(service?: string): Promise<AdbSocket> {
         console.log("inside transport connect");
         const wsUrlWithService = `${this.wsUrl}${this.wsUrl.includes("?") ? "&" : "?"}service=${encodeURIComponent(service ?? this._service)}`;
-        // @ts-ignore
         return Promise.resolve(
-            new AdbUsbSocket(service ?? this._service, wsUrlWithService),
+            new AdbUsbSocket(this._service, wsUrlWithService),
         );
     }
 
