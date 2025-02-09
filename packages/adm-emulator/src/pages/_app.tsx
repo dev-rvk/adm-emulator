@@ -68,6 +68,11 @@ const ROUTES = [
         name: "Logcat",
     },
     {
+        url: "/frida",
+        icon: Icons.Bug,
+        name: "Frida",
+    },
+    {
         url: "/power",
         icon: Icons.Power,
         name: "Power Menu",
@@ -136,23 +141,22 @@ const {
 
 function App({ Component, pageProps }: AppProps) {
     const classes = useClasses();
-    
+
     // redirect url
     const router = useRouter();
     const { wsUrl } = router.query;
 
     useEffect(() => {
-        if (wsUrl && typeof wsUrl === 'string'){
+        if (wsUrl && typeof wsUrl === "string") {
             // store in local storage
             const wsDevice = new AdbDaemonWebSocketDevice(wsUrl);
-            const savedList = localStorage.getItem("ws-backend-lst") || '[]';
+            const savedList = localStorage.getItem("ws-backend-lst") || "[]";
             const parsed = JSON.parse(savedList);
-            parsed.push({address: wsUrl });
+            parsed.push({ address: wsUrl });
             localStorage.setItem("ws-backend-list", JSON.stringify(parsed));
             // router.reload()
         }
     }, [wsUrl]);
-
 
     const [leftPanelVisible, setLeftPanelVisible] = useState(false);
     const toggleLeftPanel = useCallback(() => {

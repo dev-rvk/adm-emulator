@@ -30,7 +30,7 @@ const SignalStrengthOptions = Object.values(DemoModeSignalStrength).map(
             [DemoModeSignalStrength.Level3]: "Level 3",
             [DemoModeSignalStrength.Level4]: "Level 4",
         }[key],
-    })
+    }),
 );
 
 const MobileDataTypeOptions = DemoModeMobileDataTypes.map((key) => ({
@@ -97,7 +97,7 @@ class DemoModePanelState {
                     this.features.clear();
                 }
             },
-            { fireImmediately: true }
+            { fireImmediately: true },
         );
 
         // Apply all features when enable
@@ -106,7 +106,7 @@ class DemoModePanelState {
                 for (const group of FEATURES) {
                     for (const feature of group) {
                         feature.onChange(
-                            this.features.get(feature.key) ?? feature.initial
+                            this.features.get(feature.key) ?? feature.initial,
                         );
                     }
                 }
@@ -168,7 +168,7 @@ const FEATURES: FeatureDefinition[][] = [
             initial: DemoModeSignalStrength.Level4,
             onChange: (value) =>
                 state.demoMode!.setWifiSignalStrength(
-                    value as DemoModeSignalStrength
+                    value as DemoModeSignalStrength,
                 ),
         },
         {
@@ -187,7 +187,7 @@ const FEATURES: FeatureDefinition[][] = [
             initial: "lte",
             onChange: (value) =>
                 state.demoMode!.setMobileDataType(
-                    value as DemoModeMobileDataType
+                    value as DemoModeMobileDataType,
                 ),
         },
         {
@@ -198,7 +198,7 @@ const FEATURES: FeatureDefinition[][] = [
             initial: DemoModeSignalStrength.Level4,
             onChange: (value) =>
                 state.demoMode!.setMobileSignalStrength(
-                    value as DemoModeSignalStrength
+                    value as DemoModeSignalStrength,
                 ),
         },
     ],
@@ -211,7 +211,7 @@ const FEATURES: FeatureDefinition[][] = [
             initial: "transparent",
             onChange: (value) =>
                 state.demoMode!.setStatusBarMode(
-                    value as DemoModeStatusBarMode
+                    value as DemoModeStatusBarMode,
                 ),
         },
         {
@@ -264,7 +264,7 @@ const FEATURES: FeatureDefinition[][] = [
             onChange: (value) =>
                 state.demoMode!.setTime(
                     value as number,
-                    (state.features.get("minute") as number | undefined) ?? 34
+                    (state.features.get("minute") as number | undefined) ?? 34,
                 ),
         },
         {
@@ -278,7 +278,7 @@ const FEATURES: FeatureDefinition[][] = [
             onChange: (value) =>
                 state.demoMode!.setTime(
                     (state.features.get("hour") as number | undefined) ?? 34,
-                    value as number
+                    value as number,
                 ),
         },
     ],
@@ -303,7 +303,7 @@ const FeatureBase = ({ feature }: { feature: FeatureDefinition }) => {
                 state.enabled = true;
             });
         },
-        [feature]
+        [feature],
     );
 
     const value = state.features.get(feature.key) ?? feature.initial;
@@ -361,7 +361,7 @@ export const DemoModePanel = observer(({ style }: DemoModePanelProps) => {
                 state.enabled = false;
             });
         },
-        []
+        [],
     );
 
     const handleEnabledChange = useCallback(
@@ -369,7 +369,7 @@ export const DemoModePanel = observer(({ style }: DemoModePanelProps) => {
             await state.demoMode!.setEnabled(value!);
             runInAction(() => (state.enabled = value!));
         },
-        []
+        [],
     );
 
     return (

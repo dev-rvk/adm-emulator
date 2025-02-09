@@ -16,6 +16,8 @@ import { PromiseResolver } from "@yume-chan/async";
 import type { ValueOrPromise } from "@yume-chan/struct";
 import { DuplexStreamFactory } from "@yume-chan/stream-extra";
 import { ConsumableWritableStream } from "@yume-chan/stream-extra";
+import { AdbReverseNotSupportedError } from "@yume-chan/adb";
+
 // import { randomUUID } from "crypto";
 
 // Utility function for client-side ID management
@@ -183,20 +185,16 @@ export class AdbUsbTransport implements AdbTransport {
         handler: AdbIncomingSocketHandler,
         address?: string,
     ): ValueOrPromise<string> {
-        if (!address) {
-            const id = Math.random().toString().substring(2);
-            address = `localabstract:reverse_${id}`;
-        }
-
-        // Here we can add WebSocket-specific handling for reverse tunnels
-        // Could involve setting up a new WebSocket connection for the tunnel
-
-        return address;
+        throw new AdbReverseNotSupportedError();
     }
 
-    removeReverseTunnel(address: string): ValueOrPromise<void> {}
+    removeReverseTunnel() {
+        throw new AdbReverseNotSupportedError();
+    }
 
-    clearReverseTunnels(): ValueOrPromise<void> {}
+    clearReverseTunnels() {
+        throw new AdbReverseNotSupportedError();
+    }
 
     close(): ValueOrPromise<void> {
         this.#disconnected.resolve();

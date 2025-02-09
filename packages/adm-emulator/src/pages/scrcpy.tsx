@@ -165,7 +165,7 @@ const FullscreenHint = observer(function FullscreenHint({
 
     return (
         <div className={classes.fullScreenStatusBar}>
-            <div>{GLOBAL_STATE.device?.serial}</div>
+            <div>{GLOBAL_STATE.serial}</div>
             <div>FPS: {STATE.fps}</div>
 
             <div className={classes.spacer} />

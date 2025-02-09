@@ -214,7 +214,7 @@ export const SETTING_STATE = makeAutoObservable(
         decoders: observable.shallow,
         settings: observable.deep,
         clientSettings: observable.deep,
-    }
+    },
 );
 
 export const SCRCPY_SETTINGS_FILENAME = "/data/local/tmp/.tango.json";
@@ -290,7 +290,7 @@ export const SETTING_DEFINITIONS = computed(() => {
             key: "powerOffOnClose",
             type: "toggle",
             label: "Turn device off on stop",
-        }
+        },
     );
 
     result.push({
@@ -314,9 +314,10 @@ export const SETTING_DEFINITIONS = computed(() => {
                             VERSION,
                             new AdbScrcpyOptionsLatest(
                                 new ScrcpyOptionsLatest({
+                                    tunnelForward: true,
                                     logLevel: ScrcpyLogLevel.Debug,
-                                })
-                            )
+                                }),
+                            ),
                         );
 
                         runInAction(() => {
@@ -326,7 +327,7 @@ export const SETTING_DEFINITIONS = computed(() => {
                                 !SETTING_STATE.displays.some(
                                     (x) =>
                                         x.id ===
-                                        SETTING_STATE.settings.displayId
+                                        SETTING_STATE.settings.displayId,
                                 )
                             ) {
                                 SETTING_STATE.settings.displayId =
@@ -412,9 +413,10 @@ export const SETTING_DEFINITIONS = computed(() => {
                                 VERSION,
                                 new AdbScrcpyOptionsLatest(
                                     new ScrcpyOptionsLatest({
+                                        tunnelForward: true,
                                         logLevel: ScrcpyLogLevel.Debug,
-                                    })
-                                )
+                                    }),
+                                ),
                             );
 
                             runInAction(() => {
@@ -431,13 +433,13 @@ export const SETTING_DEFINITIONS = computed(() => {
                     (item) =>
                         item.type === "video" &&
                         (!item.codec ||
-                            item.codec === SETTING_STATE.settings.videoCodec!)
+                            item.codec === SETTING_STATE.settings.videoCodec!),
                 )
                 .map((item) => ({
                     key: item.name,
                     text: item.name,
                 })),
-        }
+        },
     );
 
     result.push({
@@ -546,9 +548,10 @@ export const SETTING_DEFINITIONS = computed(() => {
                                 VERSION,
                                 new AdbScrcpyOptionsLatest(
                                     new ScrcpyOptionsLatest({
+                                        tunnelForward: true,
                                         logLevel: ScrcpyLogLevel.Debug,
-                                    })
-                                )
+                                    }),
+                                ),
                             );
 
                             runInAction(() => {
@@ -564,13 +567,13 @@ export const SETTING_DEFINITIONS = computed(() => {
                 .filter(
                     (x) =>
                         x.type === "audio" &&
-                        x.codec === SETTING_STATE.settings.audioCodec
+                        x.codec === SETTING_STATE.settings.audioCodec,
                 )
                 .map((item) => ({
                     key: item.name,
                     text: item.name,
                 })),
-        }
+        },
     );
 
     return result;
@@ -586,12 +589,12 @@ autorun(() => {
     const encodersForCurrentVideoCodec = SETTING_STATE.encoders.filter(
         (item) =>
             item.type === "video" &&
-            item.codec === SETTING_STATE.settings.videoCodec
+            item.codec === SETTING_STATE.settings.videoCodec,
     );
     if (
         SETTING_STATE.settings.videoEncoder &&
         encodersForCurrentVideoCodec.every(
-            (item) => item.name !== SETTING_STATE.settings.videoEncoder
+            (item) => item.name !== SETTING_STATE.settings.videoEncoder,
         )
     ) {
         SETTING_STATE.settings.videoEncoder = "";
@@ -600,12 +603,12 @@ autorun(() => {
     const encodersForCurrentAudioCodec = SETTING_STATE.encoders.filter(
         (item) =>
             item.type === "audio" &&
-            item.codec === SETTING_STATE.settings.audioCodec
+            item.codec === SETTING_STATE.settings.audioCodec,
     );
     if (
         SETTING_STATE.settings.audioEncoder &&
         encodersForCurrentAudioCodec.every(
-            (item) => item.name !== SETTING_STATE.settings.audioEncoder
+            (item) => item.name !== SETTING_STATE.settings.audioEncoder,
         )
     ) {
         SETTING_STATE.settings.audioEncoder = "";

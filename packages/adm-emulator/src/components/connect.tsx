@@ -111,7 +111,7 @@ function ConnectCore(): JSX.Element | null {
     }, [wsUrlUSB, isConnecting, setIsConnecting]);
 
     const router = useRouter();
-    const { type, wsUrl } = router.query;
+    const { type, wsUrl, serial } = router.query;
 
     // Handle initial websocket URL setup
     useEffect(() => {
@@ -120,7 +120,12 @@ function ConnectCore(): JSX.Element | null {
         }
 
         const connectionType = type.toString().toUpperCase();
+        const serialValue = typeof serial === "string" ? serial : undefined;
 
+        // Set the serial in GLOBAL_STATE if available
+        if (serialValue) {
+            GLOBAL_STATE.setSerial(serialValue);
+        }
         if (
             (connectionType === "EMULATOR" || connectionType === "WIFI") &&
             !GLOBAL_STATE.adb

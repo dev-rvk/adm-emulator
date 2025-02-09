@@ -16,6 +16,7 @@ export interface PacketLogItem extends AdbPacketData {
 export class GlobalState {
     device: AdbDaemonDevice | undefined = undefined;
     adb: Adb | undefined = undefined;
+    serial: string | undefined = undefined;
 
     errorDialogVisible = false;
     errorDialogMessage = "";
@@ -32,6 +33,10 @@ export class GlobalState {
     setDevice(device: AdbDaemonDevice | undefined, adb: Adb | undefined) {
         this.device = device;
         this.adb = adb;
+    }
+
+    setSerial(serial: string | undefined) {
+        this.serial = serial;
     }
 
     showErrorDialog(message: Error | string) {

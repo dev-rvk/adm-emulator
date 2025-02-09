@@ -3,34 +3,34 @@ import { AdbDaemonWebUsbDevice } from "@yume-chan/adb-daemon-webusb";
 import { AdbScrcpyClient, AdbScrcpyOptionsLatest } from "@yume-chan/adb-scrcpy";
 import { VERSION } from "@yume-chan/fetch-scrcpy-server";
 import {
-  Float32PcmPlayer,
-  Float32PlanerPcmPlayer,
-  Int16PcmPlayer,
-  PcmPlayer,
+    Float32PcmPlayer,
+    Float32PlanerPcmPlayer,
+    Int16PcmPlayer,
+    PcmPlayer,
 } from "@yume-chan/pcm-player";
 import {
-  AndroidScreenPowerMode,
-  CodecOptions,
-  DEFAULT_SERVER_PATH,
-  ScrcpyAudioCodec,
-  ScrcpyDeviceMessageType,
-  ScrcpyHoverHelper,
-  ScrcpyInstanceId,
-  ScrcpyLogLevel,
-  ScrcpyMediaStreamPacket,
-  ScrcpyOptionsLatest,
-  ScrcpyVideoCodecId,
-  clamp,
-  h264ParseConfiguration,
-  h265ParseConfiguration,
+    AndroidScreenPowerMode,
+    CodecOptions,
+    DEFAULT_SERVER_PATH,
+    ScrcpyAudioCodec,
+    ScrcpyDeviceMessageType,
+    ScrcpyHoverHelper,
+    ScrcpyInstanceId,
+    ScrcpyLogLevel,
+    ScrcpyMediaStreamPacket,
+    ScrcpyOptionsLatest,
+    ScrcpyVideoCodecId,
+    clamp,
+    h264ParseConfiguration,
+    h265ParseConfiguration,
 } from "@yume-chan/scrcpy";
 import { ScrcpyVideoDecoder } from "@yume-chan/scrcpy-decoder-tinyh264";
 import {
-  Consumable,
-  DistributionStream,
-  InspectStream,
-  ReadableStream,
-  WritableStream,
+    Consumable,
+    DistributionStream,
+    InspectStream,
+    ReadableStream,
+    WritableStream,
 } from "@yume-chan/stream-extra";
 import { action, autorun, makeAutoObservable, runInAction } from "mobx";
 import { GLOBAL_STATE } from "../../state";
@@ -38,9 +38,9 @@ import { ProgressStream } from "../../utils";
 import { AacDecodeStream, OpusDecodeStream } from "./audio-decode-stream";
 import { fetchServer } from "./fetch-server";
 import {
-  AoaKeyboardInjector,
-  KeyboardInjector,
-  ScrcpyKeyboardInjector,
+    AoaKeyboardInjector,
+    KeyboardInjector,
+    ScrcpyKeyboardInjector,
 } from "./input";
 import { MatroskaMuxingRecorder, RECORD_STATE } from "./recorder";
 import { SCRCPY_SETTINGS_FILENAME, SETTING_STATE } from "./settings";
@@ -257,7 +257,8 @@ export class ScrcpyPageState {
                     logLevel: ScrcpyLogLevel.Debug,
                     scid: ScrcpyInstanceId.random(),
                     sendDeviceMeta: false,
-                    sendDummyByte: false,
+                    tunnelForward: true,
+                    sendDummyByte: true,
                     videoCodecOptions,
                 }),
             );
