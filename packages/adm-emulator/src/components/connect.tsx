@@ -8,6 +8,8 @@ import {
     Stack,
     StackItem,
     TextField,
+    Text,
+    Icon,
 } from "@fluentui/react";
 import {
     Adb,
@@ -31,16 +33,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { GLOBAL_STATE } from "../state";
 import { CommonStackTokens, Icons } from "../utils";
 import { useRouter } from "next/router";
-// import {AdbPacketSerializeStream, AdbPacketDispatcher} from "@yume-chan/adb";
 import { AdbDaemonWebUsbDeviceManager } from "@yume-chan/adb-daemon-webusb";
+import { AdbUsbTransport, getClientId } from "../utils/adb-usb-transport";
+import { config } from "config";
 
-import { AdbUsbTransport } from "../utils/adb-usb-transport";
-import { error } from "node:console";
-/**
- * Imports the `AdbUsbTransport` utility from the `../utils/adb-usb-transport` module.
- * This utility is likely used for handling USB-based communication with ADB devices.
- */
-// import { AdbUsbTransport } from "../utils/AdbUsbTransport";
+const serverUrl = config.TANGO_BACKEND_MANAGER_URL;
 
 const DropdownStyles = { dropdown: { width: "100%" } };
 
@@ -78,25 +75,48 @@ function ConnectCore(): JSX.Element | null {
         if (isConnecting) return;
         setIsConnecting(true);
         console.log("connecting....");
+        console.log("WebSocket URL:", wsUrlUSB); // Log the value of wsUrlUSB before using it
+        if (!wsUrlUSB) {
+            console.log("WebSocket URL is not set");
+            throw new Error("WebSocket URL is not set");
+        }
+        const device = new Adb(new AdbUsbTransport({ wsUrl: wsUrlUSB }));
+        console.log("Device:", device);
+        const url = new URL(wsUrlUSB);
+
         try {
-            const device = new Adb(new AdbUsbTransport({ wsUrl: wsUrlUSB }));
             console.log("URL content:", wsUrlUSB);
             console.log("URL length:", wsUrlUSB?.length);
             console.log(device);
             GLOBAL_STATE.setDevice(undefined, device);
 
-            device.disconnected.then(() => {
+            const serialParam = url.searchParams.get("serial");
+
+            if (!serialParam) {
+                throw new Error("Serial parameter not found in URL");
+            }
+
+            const clientId = getClientId();
+
+            // Notify backend that the device is connected
+            await fetch(`${serverUrl}/connected`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    clientId,
+                    serial: serialParam,
+                }),
+            });
+
+            device.disconnected.then(async () => {
                 console.log("Device disconnected");
-                GLOBAL_STATE.setDevice(undefined, undefined);
+                await dispose(serialParam);
             });
 
             console.log(GLOBAL_STATE.adb);
-
-            const serial = GLOBAL_STATE.adb?.serial;
             console.log("Device serial:", serial);
-
-            // await GLOBAL_STATE.adb?.power.powerOff()
-            // console.log('Device powered off');
         } catch (e: any) {
             if (e instanceof TypeError && e.message.includes("Invalid URL")) {
                 console.warn("Invalid WebSocket URL provided:", wsUrlUSB);
@@ -108,6 +128,29 @@ function ConnectCore(): JSX.Element | null {
         } finally {
             setIsConnecting(false);
         }
+
+        async function dispose(deviceSerial: string) {
+            // Close the AdbUsbTransport instance
+            try {
+                await device.transport.close();
+            } catch (e) {
+                console.error("Error closing transport:", e);
+            }
+            GLOBAL_STATE.setDevice(undefined, undefined);
+            const clientId = getClientId();
+
+            // Notify backend that the device is disconnected
+            await fetch(`${serverUrl}/disconnected`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    clientId,
+                    serial: deviceSerial,
+                }),
+            });
+        }
     }, [wsUrlUSB, isConnecting, setIsConnecting]);
 
     const router = useRouter();
@@ -118,6 +161,7 @@ function ConnectCore(): JSX.Element | null {
         if (!type || !wsUrl || typeof wsUrl !== "string") {
             return;
         }
+        console.log("wsUrl:", wsUrl);
 
         const connectionType = type.toString().toUpperCase();
         const serialValue = typeof serial === "string" ? serial : undefined;
@@ -142,29 +186,24 @@ function ConnectCore(): JSX.Element | null {
             setSelected(device);
         } else if (connectionType === "USB" && !GLOBAL_STATE.adb) {
             // Handle USB connection
-            console.log("Setting wsUrlUSB:", decodeURIComponent(wsUrl)); // Add this line to log the decoded wsUrl
-            setWsUrlUSB(String(decodeURIComponent(wsUrl)));
+            try {
+                setWsUrlUSB(decodeURIComponent(wsUrl));
+                console.log("wsUrlUSB set to:", decodeURIComponent(wsUrl));
+            } catch (error) {
+                console.error("Error processing WebSocket URL:", error);
+                GLOBAL_STATE.showErrorDialog("Invalid WebSocket URL");
+            }
+        }
+    }, [type, wsUrl, serial]);
+
+    useEffect(() => {
+        if (wsUrlUSB) {
             connectUsbDevice();
         }
-    }, [type, wsUrl, connectUsbDevice]);
+    }, [wsUrlUSB]);
 
     // Hide UI when auto-connecting
     let showConnectUI = !wsUrl || !!GLOBAL_STATE.adb;
-    // Auto-connect when device is selected and wsUrl is present
-    useEffect(() => {
-        if (
-            wsUrl &&
-            selected?.serial === wsUrl &&
-            !GLOBAL_STATE.adb &&
-            !connecting
-        ) {
-            connect().then((r) => {
-                // eslint-disable-next-line react-hooks/exhaustive-deps
-                showConnectUI = false;
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selected, wsUrl, connecting]);
 
     const [webSocketDeviceList, setWebSocketDeviceList] = useState<
         AdbDaemonWebSocketDevice[]
@@ -275,6 +314,21 @@ function ConnectCore(): JSX.Element | null {
                     GLOBAL_STATE.appendLog("out", packet.value);
                 }),
             );
+
+            const serial = selected.serial;
+            const clientId = getClientId();
+
+            // Notify backend that the device is connected
+            await fetch(`${serverUrl}/connected`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    clientId,
+                    serial,
+                }),
+            });
         } catch (e: any) {
             GLOBAL_STATE.showErrorDialog(e);
             setConnecting(false);
@@ -291,6 +345,21 @@ function ConnectCore(): JSX.Element | null {
                 await writable.close();
             } catch {}
             GLOBAL_STATE.setDevice(undefined, undefined);
+
+            const serial = selected?.serial;
+            const clientId = getClientId();
+
+            // Notify backend that the device is disconnected
+            await fetch(`${serverUrl}/disconnected`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    clientId,
+                    serial,
+                }),
+            });
         }
 
         try {
@@ -323,8 +392,23 @@ function ConnectCore(): JSX.Element | null {
 
     const disconnect = useCallback(async () => {
         try {
+            const serial = GLOBAL_STATE.serial;
+            const clientId = getClientId();
+
             await GLOBAL_STATE.adb!.close();
             console.log("WebSocket connection closed from frontend");
+
+            // Notify backend that the device is disconnected
+            await fetch(`${serverUrl}/disconnected`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    clientId,
+                    serial,
+                }),
+            });
         } catch (e: any) {
             GLOBAL_STATE.showErrorDialog(e);
         }
@@ -410,19 +494,18 @@ function ConnectCore(): JSX.Element | null {
         <>
             {showConnectUI && (
                 <Stack tokens={{ childrenGap: 8, padding: "0 0 8px 8px" }}>
-                    <Dropdown
-                        disabled={!!GLOBAL_STATE.adb}
-                        label="Available devices"
-                        placeholder="No available devices"
-                        options={deviceOptions}
-                        styles={DropdownStyles}
-                        dropdownWidth={300}
-                        selectedKey={selected?.serial}
-                        onChange={handleSelectedChange}
-                    />
-
                     {!GLOBAL_STATE.adb ? (
                         <>
+                            <Dropdown
+                                disabled={!!GLOBAL_STATE.adb}
+                                label="Available devices"
+                                placeholder="No available devices"
+                                options={deviceOptions}
+                                styles={DropdownStyles}
+                                dropdownWidth={300}
+                                selectedKey={selected?.serial}
+                                onChange={handleSelectedChange}
+                            />
                             <Stack horizontal tokens={CommonStackTokens}>
                                 <StackItem grow shrink>
                                     <PrimaryButton
@@ -476,11 +559,47 @@ function ConnectCore(): JSX.Element | null {
                             </Stack>
                         </>
                     ) : (
-                        <DefaultButton
-                            iconProps={{ iconName: Icons.PlugDisconnected }}
-                            text="Disconnect"
-                            onClick={disconnect}
-                        />
+                        <>
+                            <Stack
+                                horizontal
+                                verticalAlign="center"
+                                tokens={{ childrenGap: 8 }}
+                                styles={{
+                                    root: {
+                                        padding: "8px",
+                                        backgroundColor: "white",
+                                        borderRadius: "2px",
+                                    },
+                                }}
+                            >
+                                <Icon
+                                    iconName={Icons.PhoneCheckmarkRegular}
+                                    styles={{
+                                        root: {
+                                            fontSize: 20,
+                                            fontWeight: 600,
+                                            color: "#0078d4",
+                                        },
+                                    }}
+                                />
+                                <Text
+                                    styles={{
+                                        root: {
+                                            paddingTop: "6px",
+                                            fontWeight: 600,
+                                            color: "#0078d4",
+                                        },
+                                    }}
+                                >
+                                    {`Device Connected: ${GLOBAL_STATE.serial}`}
+                                </Text>
+                            </Stack>
+                            <DefaultButton
+                                iconProps={{ iconName: Icons.PlugDisconnected }}
+                                text="Disconnect"
+                                onClick={disconnect}
+                            />
+                        </>
                     )}
                 </Stack>
             )}

@@ -56,6 +56,7 @@ import {
     WifiSettingsRegular,
     WindowConsoleRegular,
     ChevronLeft12Regular,
+    BugFilled,
 } from "@fluentui/react-icons";
 
 const STYLE = {};
@@ -132,6 +133,14 @@ export function register() {
                     style={{ fontSize: 20, verticalAlign: "middle" }}
                 />
             ),
+            PhoneCheckmarkRegular: (
+                <PhoneRegular
+                    style={{ fontSize: 24, verticalAlign: "middle" }}
+                />
+            ),
+            DevMode: <WindowDevToolsRegular style={STYLE} />,
+
+            Frida: <BugFilled style={STYLE} />,
         },
     });
 }
@@ -148,7 +157,7 @@ const Icons = {
     Circle: "Circle",
     ChevronDown: "ChevronDown",
     ChevronRight: "ChevronRight",
-    ChevronLeft:"ChevronLeft",
+    ChevronLeft: "ChevronLeft",
     ChevronUp: "ChevronUp",
     CloudArrowUp: "CloudArrowUp",
     CloudArrowDown: "CloudArrowDown",
@@ -186,8 +195,10 @@ const Icons = {
     WifiSettings: "WifiSettings",
     WindowConsole: "WindowConsole",
     WindowDevTools: "WindowDevTools",
-
+    DevMode: "DevMode",
     Document20: "Document20",
+    PhoneCheckmarkRegular: "PhoneCheckmarkRegular",
+    Frida: "Frida",
 };
 
 export default Icons;

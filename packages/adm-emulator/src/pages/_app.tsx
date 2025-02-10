@@ -29,7 +29,7 @@ const ROUTES = [
     // },
     {
         url: "/dev-mode",
-        icon: Icons.PhoneLaptop,
+        icon: Icons.DevMode,
         name: "Dev Mode",
     },
     {
@@ -69,7 +69,7 @@ const ROUTES = [
     },
     {
         url: "/frida",
-        icon: Icons.Bug,
+        icon: Icons.Frida,
         name: "Frida",
     },
     {

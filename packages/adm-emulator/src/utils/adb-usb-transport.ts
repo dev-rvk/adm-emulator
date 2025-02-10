@@ -21,7 +21,7 @@ import { AdbReverseNotSupportedError } from "@yume-chan/adb";
 // import { randomUUID } from "crypto";
 
 // Utility function for client-side ID management
-const getClientId = () => {
+export const getClientId = () => {
     if (typeof window !== "undefined") {
         const stored = window.sessionStorage.getItem("clientId");
         if (stored) return stored;
@@ -49,11 +49,13 @@ export class AdbUsbSocket implements AdbSocket {
         this.service = service;
         const clientId = getClientId();
         const wsUrlWithClientId = `${wsUrl}${wsUrl.includes("?") ? "&" : "?"}clientId=${encodeURIComponent(clientId)}`;
-        console.log(wsUrlWithClientId);
+        // console.log(wsUrlWithClientId);
         this.ws = new WebSocket(wsUrlWithClientId);
         this.ws.binaryType = "arraybuffer";
 
-        console.log(`Attempting to connect to WebSocket at ${wsUrl}`);
+        console.log(
+            `Attempting to connect to WebSocket at ${wsUrlWithClientId}`,
+        );
 
         const duplex = new DuplexStreamFactory<
             Uint8Array,
