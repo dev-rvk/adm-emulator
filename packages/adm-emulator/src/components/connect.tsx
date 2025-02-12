@@ -29,7 +29,7 @@ import {
     pipeFrom,
 } from "@yume-chan/stream-extra";
 import { observer } from "mobx-react-lite";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { use, useCallback, useEffect, useMemo, useState } from "react";
 import { GLOBAL_STATE } from "../state";
 import { CommonStackTokens, Icons } from "../utils";
 import { useRouter } from "next/router";
@@ -48,7 +48,9 @@ function ConnectCore(): JSX.Element | null {
     const [connecting, setConnecting] = useState(false);
     const [usbSupported, setUsbSupported] = useState(true);
     const [usbDeviceList, setUsbDeviceList] = useState<AdbDaemonDevice[]>([]);
-
+    const [connectingEmulator, setConnectingEmulator] = useState<
+        Boolean | undefined
+    >();
     const handleSelectedChange = (
         e: React.FormEvent<HTMLDivElement>,
         option?: IDropdownOption,
@@ -184,6 +186,7 @@ function ConnectCore(): JSX.Element | null {
                 return list;
             });
             setSelected(device);
+            setConnectingEmulator(true);
         } else if (connectionType === "USB" && !GLOBAL_STATE.adb) {
             // Handle USB connection
             try {
@@ -201,6 +204,17 @@ function ConnectCore(): JSX.Element | null {
             connectUsbDevice();
         }
     }, [wsUrlUSB]);
+
+    useEffect(() => {
+        if (
+            connectingEmulator &&
+            selected &&
+            !GLOBAL_STATE.adb &&
+            !isConnecting
+        ) {
+            connect().then(() => {});
+        }
+    });
 
     // Hide UI when auto-connecting
     let showConnectUI = !wsUrl || !!GLOBAL_STATE.adb;
@@ -315,7 +329,7 @@ function ConnectCore(): JSX.Element | null {
                 }),
             );
 
-            const serial = selected.serial;
+            const serial = GLOBAL_STATE.serial;
             const clientId = getClientId();
 
             // Notify backend that the device is connected
@@ -346,7 +360,7 @@ function ConnectCore(): JSX.Element | null {
             } catch {}
             GLOBAL_STATE.setDevice(undefined, undefined);
 
-            const serial = selected?.serial;
+            const serial = GLOBAL_STATE.serial;
             const clientId = getClientId();
 
             // Notify backend that the device is disconnected
@@ -394,7 +408,7 @@ function ConnectCore(): JSX.Element | null {
         try {
             const serial = GLOBAL_STATE.serial;
             const clientId = getClientId();
-
+            setSelected(undefined);
             await GLOBAL_STATE.adb!.close();
             console.log("WebSocket connection closed from frontend");
 
