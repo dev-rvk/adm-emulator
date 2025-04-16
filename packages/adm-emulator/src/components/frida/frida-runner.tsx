@@ -23,7 +23,7 @@ import { Terminal } from "xterm";
 import "xterm/css/xterm.css";
 import dynamic from "next/dynamic";
 import { GLOBAL_STATE } from "../../state";
-import { config } from "config";
+import { config } from "@dev-rvk/adm-config";
 
 const XTerminalNoSSR = dynamic(() => import("./terminal"), {
     ssr: false,

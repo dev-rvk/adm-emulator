@@ -35,7 +35,7 @@ import { CommonStackTokens, Icons } from "../utils";
 import { useRouter } from "next/router";
 import { AdbDaemonWebUsbDeviceManager } from "@yume-chan/adb-daemon-webusb";
 import { AdbUsbTransport, getClientId } from "../utils/adb-usb-transport";
-import { config } from "config";
+import { config } from "@dev-rvk/adm-config";
 
 const serverUrl = config.TANGO_BACKEND_MANAGER_URL;
 

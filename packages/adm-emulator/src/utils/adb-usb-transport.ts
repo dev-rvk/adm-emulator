@@ -17,15 +17,33 @@ import type { ValueOrPromise } from "@yume-chan/struct";
 import { DuplexStreamFactory } from "@yume-chan/stream-extra";
 import { ConsumableWritableStream } from "@yume-chan/stream-extra";
 import { AdbReverseNotSupportedError } from "@yume-chan/adb";
+import { randomUUID } from "crypto";
 
-// import { randomUUID } from "crypto";
+function generateUUID() {
+    try {
+        return randomUUID();
+    } catch {
+        const arr = new Uint8Array(16);
+        window.crypto.getRandomValues(arr);
 
+        arr[6] = (arr[6] & 0x0f) | 0x40; // UUID version 4
+        arr[8] = (arr[8] & 0x3f) | 0x80; // Variant 1
+
+        return [...arr]
+            .map((b, i) =>
+                [4, 6, 8, 10].includes(i)
+                    ? `-${b.toString(16).padStart(2, "0")}`
+                    : b.toString(16).padStart(2, "0"),
+            )
+            .join("");
+    }
+}
 // Utility function for client-side ID management
 export const getClientId = () => {
     if (typeof window !== "undefined") {
         const stored = window.sessionStorage.getItem("clientId");
         if (stored) return stored;
-        const newId = window.crypto.randomUUID();
+        const newId = generateUUID();
         window.sessionStorage.setItem("clientId", newId);
         return newId;
     }

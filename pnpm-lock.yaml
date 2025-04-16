@@ -67,6 +67,9 @@ importers:
 
   packages/adm-emulator:
     dependencies:
+      '@dev-rvk/adm-config':
+        specifier: ^1.0.2
+        version: 1.0.2
       '@fluentui/react':
         specifier: ^8.119.3
         version: 8.119.3(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -151,9 +154,6 @@ importers:
       comlink:
         specifier: ^4.4.1
         version: 4.4.1
-      config:
-        specifier: workspace:*
-        version: link:../config
       fflate:
         specifier: ^0.8.2
         version: 0.8.2
@@ -221,16 +221,6 @@ importers:
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
-
-  packages/config:
-    dependencies:
-      typescript:
-        specifier: ^5.6.3
-        version: 5.7.3
-    devDependencies:
-      '@types/node':
-        specifier: ^20.17.6
-        version: 20.17.17
 
   packages/tabby-launcher:
     devDependencies:
@@ -1298,6 +1288,9 @@ packages:
 
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
+
+  '@dev-rvk/adm-config@1.0.2':
+    resolution: {integrity: sha512-YQPallSsTqIj0kDBmRw90yFV4mwra2nOsjyBmhgVHzZv+yxQ4IeB1JxGW+Ob63bTplx1kmjWYWB6OEuD6EgYiQ==}
 
   '@discoveryjs/json-ext@0.5.7':
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
@@ -7301,6 +7294,10 @@ snapshots:
       to-fast-properties: 2.0.0
 
   '@bcoe/v8-coverage@0.2.3': {}
+
+  '@dev-rvk/adm-config@1.0.2':
+    dependencies:
+      typescript: 5.7.3
 
   '@discoveryjs/json-ext@0.5.7': {}
 
