@@ -1,4 +1,4 @@
-export declare const IP_ADDRESS = "192.168.0.217";
+export declare const IP_ADDRESS = "192.168.1.35";
 export declare const config: {
     MANAGER_BACKEND_PORT: number;
     MANAGER_FRONTEND_PORT: number;

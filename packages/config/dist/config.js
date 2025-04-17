@@ -1,4 +1,4 @@
-export const IP_ADDRESS = "192.168.0.217";
+export const IP_ADDRESS = "192.168.1.35";
 let HOST;
 if (!IP_ADDRESS) {
     console.log("IP_ADDRESS is not set. Using localhost");

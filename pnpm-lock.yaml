@@ -222,6 +222,16 @@ importers:
         specifier: ^5.5.4
         version: 5.5.4
 
+  packages/config:
+    dependencies:
+      typescript:
+        specifier: ^5.6.3
+        version: 5.7.3
+    devDependencies:
+      '@types/node':
+        specifier: ^20.17.6
+        version: 20.17.17
+
   packages/tabby-launcher:
     devDependencies:
       '@angular/animations':
@@ -292,7 +302,7 @@ importers:
         version: 3.12.0
       css-loader:
         specifier: ^6.8.1
-        version: 6.8.1(webpack@5.88.2(webpack-cli@5.1.4))
+        version: 6.8.1(webpack@5.88.2)
       deepmerge:
         specifier: ^4.3.1
         version: 4.3.1
@@ -322,37 +332,37 @@ importers:
         version: 1.67.0
       sass-loader:
         specifier: ^13.3.2
-        version: 13.3.2(sass@1.67.0)(webpack@5.88.2(webpack-cli@5.1.4))
+        version: 13.3.2(sass@1.67.0)(webpack@5.88.2)
       source-code-pro:
         specifier: ^2.38.0
         version: 2.38.0
       source-map-loader:
         specifier: ^4.0.1
-        version: 4.0.1(webpack@5.88.2(webpack-cli@5.1.4))
+        version: 4.0.1(webpack@5.88.2)
       source-sans-pro:
         specifier: 3.6.0
         version: 3.6.0
       style-loader:
         specifier: ^3.3.3
-        version: 3.3.3(webpack@5.88.2(webpack-cli@5.1.4))
+        version: 3.3.3(webpack@5.88.2)
       tabby-community-color-schemes:
         specifier: ^1.0.197-nightly.1
-        version: 1.0.197-nightly.1(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(tabby-core@1.0.197-nightly.1(jegwtrcmovtwuaa6mrjvtvlxhe))(tabby-terminal@1.0.197-nightly.1(s5mm7gu5yo7dcfs3tya4vk7cd4))
+        version: 1.0.197-nightly.1(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(tabby-core@1.0.197-nightly.1(d60f40c1e7f8cedf1c507f895862e107))(tabby-terminal@1.0.197-nightly.1(0815b3c75eabb7d5896171ab09b90214))
       tabby-core:
         specifier: ^1.0.197-nightly.1
-        version: 1.0.197-nightly.1(jegwtrcmovtwuaa6mrjvtvlxhe)
+        version: 1.0.197-nightly.1(d60f40c1e7f8cedf1c507f895862e107)
       tabby-settings:
         specifier: ^1.0.197-nightly.1
-        version: 1.0.197-nightly.1(5xjkqc4rdpe32663ixnziyq4km)
+        version: 1.0.197-nightly.1(bb898e786edd6dde320f68b3732c10c0)
       tabby-terminal:
         specifier: ^1.0.197-nightly.1
-        version: 1.0.197-nightly.1(s5mm7gu5yo7dcfs3tya4vk7cd4)
+        version: 1.0.197-nightly.1(0815b3c75eabb7d5896171ab09b90214)
       tabby-web:
         specifier: ^1.0.197-nightly.1
         version: 1.0.197-nightly.1(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))
       ts-loader:
         specifier: ^9.4.4
-        version: 9.4.4(typescript@5.2.2)(webpack@5.88.2(webpack-cli@5.1.4))
+        version: 9.4.4(typescript@5.2.2)(webpack@5.88.2)
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -410,7 +420,7 @@ importers:
         version: 14.1.1(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(@angular/forms@15.2.6(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(@angular/platform-browser@15.2.6(@angular/animations@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(rxjs@7.8.1))(@angular/localize@15.2.9(@angular/compiler-cli@15.2.6(@angular/compiler@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.2.2))(@angular/compiler@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))))(@popperjs/core@2.11.8)(rxjs@7.8.1)
       '@ngtools/webpack':
         specifier: ^15.2.5
-        version: 15.2.5(@angular/compiler-cli@15.2.6(@angular/compiler@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.2.2))(typescript@5.2.2)(webpack@5.88.2(webpack-cli@5.1.4))
+        version: 15.2.5(@angular/compiler-cli@15.2.6(@angular/compiler@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.2.2))(typescript@5.2.2)(webpack@5.88.2)
       '@popperjs/core':
         specifier: ^2.11.8
         version: 2.11.8
@@ -428,7 +438,7 @@ importers:
         version: 0.0.21
       babel-loader:
         specifier: ^9.1.3
-        version: 9.1.3(@babel/core@7.24.9)(webpack@5.88.2(webpack-cli@5.1.4))
+        version: 9.1.3(@babel/core@7.24.9)(webpack@5.88.2)
       mobx:
         specifier: ^6.10.2
         version: 6.10.2
@@ -437,16 +447,16 @@ importers:
         version: 7.8.1
       source-map-loader:
         specifier: ^4.0.1
-        version: 4.0.1(webpack@5.88.2(webpack-cli@5.1.4))
+        version: 4.0.1(webpack@5.88.2)
       tabby-core:
         specifier: ^1.0.197-nightly.1
-        version: 1.0.197-nightly.1(jegwtrcmovtwuaa6mrjvtvlxhe)
+        version: 1.0.197-nightly.1(d60f40c1e7f8cedf1c507f895862e107)
       tabby-settings:
         specifier: ^1.0.197-nightly.1
-        version: 1.0.197-nightly.1(5xjkqc4rdpe32663ixnziyq4km)
+        version: 1.0.197-nightly.1(bb898e786edd6dde320f68b3732c10c0)
       tabby-terminal:
         specifier: ^1.0.197-nightly.1
-        version: 1.0.197-nightly.1(s5mm7gu5yo7dcfs3tya4vk7cd4)
+        version: 1.0.197-nightly.1(0815b3c75eabb7d5896171ab09b90214)
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
@@ -7754,7 +7764,7 @@ snapshots:
     dependencies:
       '@mdx-js/mdx': 2.3.0
       source-map: 0.7.4
-      webpack: 5.88.2
+      webpack: 5.88.2(webpack-cli@5.1.4)
     transitivePeerDependencies:
       - supports-color
 
@@ -7845,7 +7855,7 @@ snapshots:
       rxjs: 7.8.1
       tslib: 2.6.2
 
-  '@ngtools/webpack@15.2.5(@angular/compiler-cli@15.2.6(@angular/compiler@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.2.2))(typescript@5.2.2)(webpack@5.88.2(webpack-cli@5.1.4))':
+  '@ngtools/webpack@15.2.5(@angular/compiler-cli@15.2.6(@angular/compiler@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.2.2))(typescript@5.2.2)(webpack@5.88.2)':
     dependencies:
       '@angular/compiler-cli': 15.2.6(@angular/compiler@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.2.2)
       typescript: 5.2.2
@@ -8329,17 +8339,17 @@ snapshots:
       '@webassemblyjs/ast': 1.11.6
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4(webpack-bundle-analyzer@4.9.1)(webpack@5.88.2))(webpack@5.88.2(webpack-cli@5.1.4))':
+  '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4)(webpack@5.88.2)':
     dependencies:
       webpack: 5.88.2(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-bundle-analyzer@4.9.1)(webpack@5.88.2)
 
-  '@webpack-cli/info@2.0.2(webpack-cli@5.1.4(webpack-bundle-analyzer@4.9.1)(webpack@5.88.2))(webpack@5.88.2(webpack-cli@5.1.4))':
+  '@webpack-cli/info@2.0.2(webpack-cli@5.1.4)(webpack@5.88.2)':
     dependencies:
       webpack: 5.88.2(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-bundle-analyzer@4.9.1)(webpack@5.88.2)
 
-  '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4(webpack-bundle-analyzer@4.9.1)(webpack@5.88.2))(webpack@5.88.2(webpack-cli@5.1.4))':
+  '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4)(webpack@5.88.2)':
     dependencies:
       webpack: 5.88.2(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-bundle-analyzer@4.9.1)(webpack@5.88.2)
@@ -8788,9 +8798,9 @@ snapshots:
       loader-utils: 2.0.4
       make-dir: 3.1.0
       schema-utils: 2.7.1
-      webpack: 5.88.2
+      webpack: 5.88.2(webpack-cli@5.1.4)
 
-  babel-loader@9.1.3(@babel/core@7.24.9)(webpack@5.88.2(webpack-cli@5.1.4)):
+  babel-loader@9.1.3(@babel/core@7.24.9)(webpack@5.88.2):
     dependencies:
       '@babel/core': 7.24.9
       find-cache-dir: 4.0.0
@@ -9088,7 +9098,7 @@ snapshots:
   clean-webpack-plugin@4.0.0(webpack@5.88.2):
     dependencies:
       del: 4.1.1
-      webpack: 5.88.2
+      webpack: 5.88.2(webpack-cli@5.1.4)
 
   client-only@0.0.1: {}
 
@@ -9228,7 +9238,7 @@ snapshots:
 
   crypto-random-string@2.0.0: {}
 
-  css-loader@6.8.1(webpack@5.88.2(webpack-cli@5.1.4)):
+  css-loader@6.8.1(webpack@5.88.2):
     dependencies:
       icss-utils: 5.1.0(postcss@8.4.29)
       postcss: 8.4.29
@@ -9678,7 +9688,7 @@ snapshots:
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0)
-      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
       eslint-plugin-jsx-a11y: 6.9.0(eslint@8.57.0)
       eslint-plugin-react: 7.35.0(eslint@8.57.0)
       eslint-plugin-react-hooks: 4.6.2(eslint@8.57.0)
@@ -9701,8 +9711,8 @@ snapshots:
       debug: 4.3.5
       enhanced-resolve: 5.17.1
       eslint: 8.57.0
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
-      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
+      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
       fast-glob: 3.3.2
       get-tsconfig: 4.7.6
       is-core-module: 2.15.0
@@ -9723,7 +9733,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0):
+  eslint-module-utils@2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -9761,7 +9771,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-import@2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0):
+  eslint-plugin-import@2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0):
     dependencies:
       array-includes: 3.1.8
       array.prototype.findlastindex: 1.2.5
@@ -9771,7 +9781,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
       hasown: 2.0.2
       is-core-module: 2.15.0
       is-glob: 4.0.3
@@ -12411,7 +12421,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass-loader@13.3.2(sass@1.67.0)(webpack@5.88.2(webpack-cli@5.1.4)):
+  sass-loader@13.3.2(sass@1.67.0)(webpack@5.88.2):
     dependencies:
       neo-async: 2.6.2
       webpack: 5.88.2(webpack-cli@5.1.4)
@@ -12559,7 +12569,7 @@ snapshots:
 
   source-map-js@1.2.0: {}
 
-  source-map-loader@4.0.1(webpack@5.88.2(webpack-cli@5.1.4)):
+  source-map-loader@4.0.1(webpack@5.88.2):
     dependencies:
       abab: 2.0.6
       iconv-lite: 0.6.3
@@ -12570,7 +12580,7 @@ snapshots:
     dependencies:
       iconv-lite: 0.6.3
       source-map-js: 1.2.0
-      webpack: 5.88.2
+      webpack: 5.88.2(webpack-cli@5.1.4)
 
   source-map-support@0.5.13:
     dependencies:
@@ -12748,7 +12758,7 @@ snapshots:
       '@tokenizer/token': 0.3.0
       peek-readable: 5.1.3
 
-  style-loader@3.3.3(webpack@5.88.2(webpack-cli@5.1.4)):
+  style-loader@3.3.3(webpack@5.88.2):
     dependencies:
       webpack: 5.88.2(webpack-cli@5.1.4)
 
@@ -12785,13 +12795,13 @@ snapshots:
       object-assign: 4.1.1
       simple-html-tokenizer: 0.1.1
 
-  tabby-community-color-schemes@1.0.197-nightly.1(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(tabby-core@1.0.197-nightly.1(jegwtrcmovtwuaa6mrjvtvlxhe))(tabby-terminal@1.0.197-nightly.1(s5mm7gu5yo7dcfs3tya4vk7cd4)):
+  tabby-community-color-schemes@1.0.197-nightly.1(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(tabby-core@1.0.197-nightly.1(d60f40c1e7f8cedf1c507f895862e107))(tabby-terminal@1.0.197-nightly.1(0815b3c75eabb7d5896171ab09b90214)):
     dependencies:
       '@angular/core': 15.2.6(rxjs@7.8.1)(zone.js@0.13.3)
-      tabby-core: 1.0.197-nightly.1(jegwtrcmovtwuaa6mrjvtvlxhe)
-      tabby-terminal: 1.0.197-nightly.1(s5mm7gu5yo7dcfs3tya4vk7cd4)
+      tabby-core: 1.0.197-nightly.1(d60f40c1e7f8cedf1c507f895862e107)
+      tabby-terminal: 1.0.197-nightly.1(0815b3c75eabb7d5896171ab09b90214)
 
-  tabby-core@1.0.197-nightly.1(jegwtrcmovtwuaa6mrjvtvlxhe):
+  tabby-core@1.0.197-nightly.1(d60f40c1e7f8cedf1c507f895862e107):
     dependencies:
       '@angular/animations': 15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))
       '@angular/common': 15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1)
@@ -12801,7 +12811,7 @@ snapshots:
       '@angular/platform-browser-dynamic': 15.2.6(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/compiler@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(@angular/platform-browser@15.2.6(@angular/animations@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))
       rxjs: 7.8.1
 
-  tabby-settings@1.0.197-nightly.1(5xjkqc4rdpe32663ixnziyq4km):
+  tabby-settings@1.0.197-nightly.1(bb898e786edd6dde320f68b3732c10c0):
     dependencies:
       '@angular/animations': 15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))
       '@angular/common': 15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1)
@@ -12810,9 +12820,9 @@ snapshots:
       '@angular/platform-browser': 15.2.6(@angular/animations@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))
       '@ng-bootstrap/ng-bootstrap': 14.1.1(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(@angular/forms@15.2.6(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(@angular/platform-browser@15.2.6(@angular/animations@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(rxjs@7.8.1))(@angular/localize@15.2.9(@angular/compiler-cli@15.2.6(@angular/compiler@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.2.2))(@angular/compiler@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))))(@popperjs/core@2.11.8)(rxjs@7.8.1)
       rxjs: 7.8.1
-      tabby-core: 1.0.197-nightly.1(jegwtrcmovtwuaa6mrjvtvlxhe)
+      tabby-core: 1.0.197-nightly.1(d60f40c1e7f8cedf1c507f895862e107)
 
-  tabby-terminal@1.0.197-nightly.1(s5mm7gu5yo7dcfs3tya4vk7cd4):
+  tabby-terminal@1.0.197-nightly.1(0815b3c75eabb7d5896171ab09b90214):
     dependencies:
       '@angular/animations': 15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))
       '@angular/common': 15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1)
@@ -12821,8 +12831,8 @@ snapshots:
       '@angular/platform-browser': 15.2.6(@angular/animations@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))
       '@ng-bootstrap/ng-bootstrap': 14.1.1(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(@angular/forms@15.2.6(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(@angular/platform-browser@15.2.6(@angular/animations@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(@angular/common@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(rxjs@7.8.1))(@angular/localize@15.2.9(@angular/compiler-cli@15.2.6(@angular/compiler@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.2.2))(@angular/compiler@15.2.6(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3))))(@popperjs/core@2.11.8)(rxjs@7.8.1)
       rxjs: 7.8.1
-      tabby-core: 1.0.197-nightly.1(jegwtrcmovtwuaa6mrjvtvlxhe)
-      tabby-settings: 1.0.197-nightly.1(5xjkqc4rdpe32663ixnziyq4km)
+      tabby-core: 1.0.197-nightly.1(d60f40c1e7f8cedf1c507f895862e107)
+      tabby-settings: 1.0.197-nightly.1(bb898e786edd6dde320f68b3732c10c0)
 
   tabby-web@1.0.197-nightly.1(@angular/core@15.2.6(rxjs@7.8.1)(zone.js@0.13.3)):
     dependencies:
@@ -12863,15 +12873,6 @@ snapshots:
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
       terser: 5.31.3
-      webpack: 5.88.2
-
-  terser-webpack-plugin@5.3.9(webpack@5.88.2(webpack-cli@5.1.4)):
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.19
-      jest-worker: 27.5.1
-      schema-utils: 3.3.0
-      serialize-javascript: 6.0.1
-      terser: 5.19.4
       webpack: 5.88.2(webpack-cli@5.1.4)
 
   terser-webpack-plugin@5.3.9(webpack@5.88.2):
@@ -12881,7 +12882,7 @@ snapshots:
       schema-utils: 3.3.0
       serialize-javascript: 6.0.1
       terser: 5.19.4
-      webpack: 5.88.2
+      webpack: 5.88.2(webpack-cli@5.1.4)
 
   terser@5.19.4:
     dependencies:
@@ -12964,7 +12965,7 @@ snapshots:
     dependencies:
       typescript: 5.5.4
 
-  ts-loader@9.4.4(typescript@5.2.2)(webpack@5.88.2(webpack-cli@5.1.4)):
+  ts-loader@9.4.4(typescript@5.2.2)(webpack@5.88.2):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.15.0
@@ -13279,9 +13280,9 @@ snapshots:
   webpack-cli@5.1.4(webpack-bundle-analyzer@4.9.1)(webpack@5.88.2):
     dependencies:
       '@discoveryjs/json-ext': 0.5.7
-      '@webpack-cli/configtest': 2.1.1(webpack-cli@5.1.4(webpack-bundle-analyzer@4.9.1)(webpack@5.88.2))(webpack@5.88.2(webpack-cli@5.1.4))
-      '@webpack-cli/info': 2.0.2(webpack-cli@5.1.4(webpack-bundle-analyzer@4.9.1)(webpack@5.88.2))(webpack@5.88.2(webpack-cli@5.1.4))
-      '@webpack-cli/serve': 2.0.5(webpack-cli@5.1.4(webpack-bundle-analyzer@4.9.1)(webpack@5.88.2))(webpack@5.88.2(webpack-cli@5.1.4))
+      '@webpack-cli/configtest': 2.1.1(webpack-cli@5.1.4)(webpack@5.88.2)
+      '@webpack-cli/info': 2.0.2(webpack-cli@5.1.4)(webpack@5.88.2)
+      '@webpack-cli/serve': 2.0.5(webpack-cli@5.1.4)(webpack@5.88.2)
       colorette: 2.0.20
       commander: 10.0.1
       cross-spawn: 7.0.3
@@ -13307,37 +13308,6 @@ snapshots:
 
   webpack-sources@3.2.3: {}
 
-  webpack@5.88.2:
-    dependencies:
-      '@types/eslint-scope': 3.7.4
-      '@types/estree': 1.0.1
-      '@webassemblyjs/ast': 1.11.6
-      '@webassemblyjs/wasm-edit': 1.11.6
-      '@webassemblyjs/wasm-parser': 1.11.6
-      acorn: 8.10.0
-      acorn-import-assertions: 1.9.0(acorn@8.10.0)
-      browserslist: 4.21.10
-      chrome-trace-event: 1.0.3
-      enhanced-resolve: 5.15.0
-      es-module-lexer: 1.3.1
-      eslint-scope: 5.1.1
-      events: 3.3.0
-      glob-to-regexp: 0.4.1
-      graceful-fs: 4.2.11
-      json-parse-even-better-errors: 2.3.1
-      loader-runner: 4.3.0
-      mime-types: 2.1.35
-      neo-async: 2.6.2
-      schema-utils: 3.3.0
-      tapable: 2.2.1
-      terser-webpack-plugin: 5.3.9(webpack@5.88.2)
-      watchpack: 2.4.0
-      webpack-sources: 3.2.3
-    transitivePeerDependencies:
-      - '@swc/core'
-      - esbuild
-      - uglify-js
-
   webpack@5.88.2(webpack-cli@5.1.4):
     dependencies:
       '@types/eslint-scope': 3.7.4
@@ -13361,7 +13331,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.9(webpack@5.88.2(webpack-cli@5.1.4))
+      terser-webpack-plugin: 5.3.9(webpack@5.88.2)
       watchpack: 2.4.0
       webpack-sources: 3.2.3
     optionalDependencies:
@@ -13550,7 +13520,7 @@ snapshots:
       fast-json-stable-stringify: 2.1.0
       pretty-bytes: 5.6.0
       upath: 1.2.0
-      webpack: 5.88.2
+      webpack: 5.88.2(webpack-cli@5.1.4)
       webpack-sources: 1.4.3
       workbox-build: 6.6.0(@types/babel__core@7.20.1)
     transitivePeerDependencies:
